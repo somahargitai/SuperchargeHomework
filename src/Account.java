@@ -1,5 +1,5 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Account {
 	public Account(int startBalance, String firstName, String lastName, int id) {
@@ -32,37 +32,52 @@ public class Account {
 		return clientID;
 	}
 	
-	public ArrayList<AccountHistoryRecord> getHistory(Date startDate, Date endDate, Boolean isItDeposit) {
+	/**
+	 * returns with the filtered list of historical transactions.
+	 */
+	public ArrayList<AccountHistoryRecord> getHistory(LocalDate startDate, LocalDate endDate, Boolean isItDeposit) {
 		ArrayList<AccountHistoryRecord> filteredAccountHistory = new ArrayList<AccountHistoryRecord>();
-		for(int i = 0; i < history.size(); i++) {
-			if(
-				(startDate == null || startDate.before(history.get(i).getDate()))
-				&& (endDate == null || history.get(i).getDate().before(endDate)) 
-				&& (isItDeposit == null || isItDeposit == history.get(i).getIsItDeposit())) {
-				filteredAccountHistory.add(history.get(i));
-			}
+		try {
+			for(int i = 0; i < history.size(); i++) {
+				if((endDate == null || history.get(i).getDate().isBefore(endDate)) 
+					&& (startDate == null || history.get(i).getDate().isAfter(startDate)) 
+				    && (isItDeposit == null || isItDeposit.equals(history.get(i).getIsItDeposit()))
+					) {
+					filteredAccountHistory.add(history.get(i));
+				}
+			}			
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
+		
 		return filteredAccountHistory;
 	}
 
 	public void withdrawal(int amount_withdrawal) {
-		if(balance > 0) {
+		if(amount_withdrawal > 0) {
 			this.balance -= amount_withdrawal;
+			LocalDate today = LocalDate.now();
+			this.history.add(new AccountHistoryRecord(
+			 balance,
+			 amount_withdrawal,
+			 false,
+			 today));
 		} else {
 			throw new IllegalArgumentException("negative values are not allowed in withdrawal processes");
 		}
 	} 
 	
 	public void deposit(int amount_deposit)  {
-		if(balance > 0) {
+		if(amount_deposit > 0) {
 			this.balance += amount_deposit;
+			LocalDate today = LocalDate.now();
+			this.history.add(new AccountHistoryRecord(
+			 balance,
+			 amount_deposit,
+			 true,
+			 today));
 		} else {
 			throw new IllegalArgumentException("negative values are not allowed in deposit processes");
 		}
-	} 
-	
-	public void moneyTransfer(int targetUserId, int amount) {
-		
-	}
-	
+	} 		
 }

@@ -8,15 +8,11 @@ public class Bank {
 	
 	private Bank() {
 		accounts = new ArrayList<Account>();
-	}
-
-	
+	}	
 	
 	public ArrayList<Account> getAccounts() {
 		return accounts;
 	}
-
-
 
 	static public Bank initBank() {
 		if(bank == null) {
@@ -25,11 +21,17 @@ public class Bank {
 		return bank;
 	}
 	
-	public void createAccount(int startBalance, String firstName, String lastName) {
+	public Account createAccount(int startBalance, String firstName, String lastName) {
 		int id = createRandomId();
-		accounts.add(new Account(startBalance, firstName, lastName, id));		
+		Account account = new Account(startBalance, firstName, lastName, id); 
+		accounts.add(account);
+		return account;
 	}
 	
+	/**
+	 * creating random and unique Id for an account
+	 * @return Id
+	 */
 	public int createRandomId() {
 		boolean isIdUnique = false;
 		Random rand = new Random();
@@ -46,6 +48,9 @@ public class Bank {
 		return id; 
 	}
 
+	/**
+	 * initialization example data
+	 */
 	public static void initExampleAccounts() {
 		bank.createAccount(1000, "Boy", "George");
 		bank.createAccount(1000, "George", "Harrison");

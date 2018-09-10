@@ -1,11 +1,16 @@
-import java.util.Date;
+import java.time.LocalDate;
 
+/**
+ * History elements to store past transactions
+ * @author Soma
+ *
+ */
 public class AccountHistoryRecord {
 	public AccountHistoryRecord(
 			 int balanceAfter,
 			 int amount,
 			 Boolean isItDeposit,
-			 Date date
+			 LocalDate date
 			) {
 		this.balanceAfter = balanceAfter;
 		this.amount = amount;
@@ -16,7 +21,7 @@ public class AccountHistoryRecord {
 	protected int balanceAfter;
 	protected int amount;
 	protected Boolean isItDeposit;
-	protected Date date;
+	protected LocalDate date;
 	
 	public int getBalanceAfter() {
 		return balanceAfter;
@@ -27,7 +32,7 @@ public class AccountHistoryRecord {
 	public Boolean getIsItDeposit() {
 		return isItDeposit;
 	}
-	public Date getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 }
